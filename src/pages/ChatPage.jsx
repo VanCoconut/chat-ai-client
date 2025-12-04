@@ -1,6 +1,6 @@
-import { useState } from "react";
+import {useState} from "react";
 
-export default function ChatPage({ user, setUser }) {
+export default function ChatPage({user, setUser}) {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
 
@@ -9,19 +9,19 @@ export default function ChatPage({ user, setUser }) {
         if (!input.trim()) return;
 
         // aggiungi messaggio utente alla chat locale
-        setMessages([...messages, { sender: "user", text: input }]);
+        setMessages([...messages, {sender: "user", text: input}]);
 
         try {
-            const res = await fetch('https://natura-ai-server.ing-v-catalano.workers.dev/chat', {
+            const res = await fetch(`${import.meta.env.VITE_P_SERVER_PATH}/chat`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: user.username, message: input })
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username: user.username, message: input})
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data.error);
 
             // aggiungi risposta del bot
-            setMessages(prev => [...prev, { sender: "bot", text: data.reply }]);
+            setMessages(prev => [...prev, {sender: "bot", text: data.reply}]);
         } catch (err) {
             alert(err.message);
         }
@@ -41,7 +41,7 @@ export default function ChatPage({ user, setUser }) {
                 <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
             </div>
 
-            <div className="border rounded p-3 mb-3" style={{height:"60vh", overflowY:"auto"}}>
+            <div className="border rounded p-3 mb-3" style={{height: "60vh", overflowY: "auto"}}>
                 {messages.map((m, i) => (
                     <div key={i} className={`mb-2 ${m.sender === "user" ? "text-end" : ""}`}>
                         <span className={`badge ${m.sender === "user" ? "bg-primary" : "bg-secondary"}`}>
