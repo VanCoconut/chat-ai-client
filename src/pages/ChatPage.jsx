@@ -1,4 +1,5 @@
 import {useState} from "react";
+import ReactMarkdown from "react-markdown";
 
 export default function ChatPage({user, setUser}) {
     const [messages, setMessages] = useState([]);
@@ -45,7 +46,7 @@ export default function ChatPage({user, setUser}) {
                 {messages.map((m, i) => (
                     <div key={i} className={`mb-2 ${m.sender === "user" ? "text-end" : ""}`}>
                         <span className={`badge ${m.sender === "user" ? "bg-primary" : "bg-secondary"}`}>
-                            {m.text}
+                            {m.sender === "bot" ? <ReactMarkdown>{m.text}</ReactMarkdown> : m.text}
                         </span>
                     </div>
                 ))}
